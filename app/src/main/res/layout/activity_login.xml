@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    tools:context="com.dse.gpsdemo.activity.LoginActivity">
+    <RelativeLayout
+        android:id="@+id/login_view"
+        android:layout_width="400dp"
+        android:layout_height="800dp"
+        android:layout_centerInParent="true"
+        >
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="登录"
+            android:id="@+id/btn_login"
+            android:onClick="finish_login"
+            android:background="#545bcb"
+            android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/login_pwd"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="52dp"
+      />
+
+        <EditText
+            android:layout_width="400dp"
+            android:layout_height="60dp"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/login_pwd"
+            android:drawableLeft="@android:drawable/ic_lock_idle_lock"
+            android:hint="请输入您的密码"
+            android:layout_below="@+id/login_account"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="400dp"
+            android:layout_height="60dp"
+            android:inputType="textPersonName"
+            android:id="@+id/login_account"
+            android:drawableLeft="@android:drawable/ic_menu_myplaces"
+            android:hint="请输入您的用户名"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp" />
+
+        <CheckBox
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:text="记住密码"
+            android:id="@+id/Login_Remember"
+            android:layout_below="@+id/login_pwd"
+            android:layout_alignParentLeft="true"
+            android:onClick="toggleSelect"
+            android:layout_alignParentStart="true"
+            android:checked="false"
+            android:layout_marginTop="10dp"
+            android:textSize="15dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/login_success_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="15.0px"
+        android:layout_marginRight="15.0px"
+        android:layout_marginTop="62.0px"
+        android:background="#ff3f3f3f"
+        android:paddingBottom="10.0px"
+        android:paddingTop="21.0px"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/login_success_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#ff3f3f3f"
+            android:textSize="20.0dip" />
+    </RelativeLayout>
+
+</RelativeLayout>
