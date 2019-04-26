@@ -52,7 +52,7 @@ public class CheckPermissionsActivity extends Activity {
 	/**
 	 * 判断是否需要检测，防止不停的弹框
 	 */
-	private boolean isNeedCheck = true;
+	public static boolean isNeedCheck = true;
 	
 	@Override
 	protected void onResume() {

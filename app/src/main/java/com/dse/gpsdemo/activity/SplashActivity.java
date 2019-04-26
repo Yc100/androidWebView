@@ -14,6 +14,7 @@ import android.os.Message;
 import android.os.SystemClock;
 
 import android.util.Log;
+import android.widget.Toast;
 
 
 import com.amap.api.location.AMapLocation;
@@ -240,19 +241,24 @@ public class SplashActivity extends CheckPermissionsActivity  implements AMapLoc
         /**
          *  定时器   当 拿到定位信息的时候，才会执行页面间的 跳转
          */
-        final Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                if(loc!=null){
-                    Intent intent1 = new Intent(SplashActivity.this, MainActivity.class);
-                    startActivity(intent1);
-                    timer.cancel();
-                }
-            }
-        };
 
-        timer.schedule(timerTask,1000,500);
+
+
+            final Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    if(CheckPermissionsActivity.isNeedCheck){
+                        if(loc!=null){
+                            Intent intent1 = new Intent(SplashActivity.this, MainActivity.class);
+                            startActivity(intent1);
+                            timer.cancel();
+                        }
+                    }
+                }
+            };
+
+            timer.schedule(timerTask,1000,1000);
 
     }
 

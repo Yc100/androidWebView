@@ -118,8 +118,6 @@ public class MainActivity extends Activity {
 
 //        dWebView.loadUrl("http://www.whdse.cn:56025/pipe/app/#/login");
 
-
-
     }
 
     private void androidJSBridge(String methodName) {

@@ -23,6 +23,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -200,6 +201,8 @@ public class LocationActivity extends CheckPermissionsActivity implements
             @Override
             public void run() {
                 if(loc!=null){
+                    String  msg = GPS_stringUtils.getLocationStr(loc);
+                    Log.i("定位信息为：",msg);
                      new NotificationUtils(LocationActivity.this).sendNormalNotification(distance);
                 }
             }
@@ -216,7 +219,7 @@ public class LocationActivity extends CheckPermissionsActivity implements
                 // 定位完成
                 case GPS_stringUtils.MSG_LOCATION_FINISH:
                      loc = (AMapLocation) msg.obj;
-                     distance +=distance+(loc.getSpeed()*2)/1000.00;
+                     distance +=(loc.getSpeed()*2)/1000.00;
                     String result = GPS_stringUtils.getLocationStr(loc);
                     tvReult.setText(result);
                     notify2OS();
