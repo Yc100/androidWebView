@@ -1,5 +1,6 @@
 package com.dse.gpsdemo.activity;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -22,6 +23,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.dse.gpsdemo.R;
+import com.dse.gpsdemo.utils.CommonData;
 import com.dse.gpsdemo.utils.GPS_stringUtils;
 import com.dse.gpsdemo.utils.NotificationUtils;
 
@@ -44,10 +46,12 @@ public class SplashActivity extends CheckPermissionsActivity  implements AMapLoc
     private PendingIntent alarmPi = null;
     private AlarmManager alarm = null;
 
-    // 当前行走的里程
-    private static  float distance = 0;
+    // 判断 当前是否开启巡检模式
 
-    public static AMapLocation loc = null;
+    public static  boolean is_startRouting = false;
+
+
+//    public static AMapLocation loc = null;
 
     // 获取当前系统版本号
     public  int currentapiVersion=android.os.Build.VERSION.SDK_INT;
@@ -164,9 +168,12 @@ public class SplashActivity extends CheckPermissionsActivity  implements AMapLoc
         new Thread(){
             @Override
             public void run() {
-                if(loc!=null){
+                if(CommonData.loc!=null){
+                    if(is_startRouting){
+                       CommonData.warkingHours = CommonData.warkingHours +2;
 
-                       new NotificationUtils(SplashActivity.this).sendNormalNotification(distance);
+                        new NotificationUtils(SplashActivity.this).sendNormalNotification(is_startRouting,CommonData.warkingHours);
+                    }
                 }
             }
         }.start();
@@ -182,10 +189,8 @@ public class SplashActivity extends CheckPermissionsActivity  implements AMapLoc
                     break;
                 // 定位完成
                 case GPS_stringUtils.MSG_LOCATION_FINISH:
-                    loc = (AMapLocation) msg.obj;
-                    distance +=distance+(loc.getSpeed()*2)/1000;
-                    String result = GPS_stringUtils.getLocationStr(loc);
-
+                    CommonData.loc = (AMapLocation) msg.obj;
+                    String result = GPS_stringUtils.getLocationStr(CommonData.loc);
                     notify2OS();
                     break;
                 //停止定位
@@ -241,29 +246,23 @@ public class SplashActivity extends CheckPermissionsActivity  implements AMapLoc
         /**
          *  定时器   当 拿到定位信息的时候，才会执行页面间的 跳转
          */
-
-
-
-            final Timer timer = new Timer();
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    if(CheckPermissionsActivity.isNeedCheck){
-                        if(loc!=null){
-                            Intent intent1 = new Intent(SplashActivity.this, MainActivity.class);
-                            startActivity(intent1);
-                            timer.cancel();
-                        }
-                    }
-                }
-            };
-
-            timer.schedule(timerTask,1000,1000);
+//            final Timer timer = new Timer();
+//            TimerTask timerTask = new TimerTask() {
+//                @Override
+//                public void run() {
+//                    if(CheckPermissionsActivity.isNeedCheck){
+//                        if(CommonData.loc!=null){
+//                            Intent intent1 = new Intent(SplashActivity.this, MainActivity.class);
+//                            startActivity(intent1);
+//                            timer.cancel();
+//                        }
+//                    }
+//                }
+//            };
+//
+//            timer.schedule(timerTask,2000,1000);
 
     }
-
-
-
 
 
 }

@@ -202,8 +202,8 @@ public class LocationActivity extends CheckPermissionsActivity implements
             public void run() {
                 if(loc!=null){
                     String  msg = GPS_stringUtils.getLocationStr(loc);
-                    Log.i("定位信息为：",msg);
-                     new NotificationUtils(LocationActivity.this).sendNormalNotification(distance);
+//                    Log.i("定位信息为：",msg);
+//                     new NotificationUtils(LocationActivity.this).sendNormalNotification(distance);
                 }
             }
         }.start();

@@ -19,9 +19,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.dse.gpsdemo.R;
+import com.dse.gpsdemo.utils.CommonData;
 import com.dse.gpsdemo.utils.PermissionTool;
 
 /**
@@ -46,8 +48,8 @@ public class CheckPermissionsActivity extends Activity {
 			Manifest.permission.READ_EXTERNAL_STORAGE,
 			Manifest.permission.READ_PHONE_STATE
 			};
-	
-	private static final int PERMISSON_REQUESTCODE = 0;
+
+	public static final int PERMISSON_REQUESTCODE = 0;
 	
 	/**
 	 * 判断是否需要检测，防止不停的弹框
@@ -72,19 +74,21 @@ public class CheckPermissionsActivity extends Activity {
 	 */
 	private void checkPermissions(String... permissions) {
 		try {
-			if (Build.VERSION.SDK_INT >= 23
-					&& getApplicationInfo().targetSdkVersion >= 23) {
+			if (Build.VERSION.SDK_INT >= 23 && getApplicationInfo().targetSdkVersion >= 23) {
 				List<String> needRequestPermissonList = findDeniedPermissions(permissions);
-				if (null != needRequestPermissonList
-						&& needRequestPermissonList.size() > 0) {
+				if (null != needRequestPermissonList && needRequestPermissonList.size() > 0) {
 					String[] array = needRequestPermissonList.toArray(new String[needRequestPermissonList.size()]);
-					Method method = getClass().getMethod("requestPermissions", new Class[]{String[].class,
-							int.class});
-
+					Method method = getClass().getMethod("requestPermissions", new Class[]{String[].class,int.class});
 					method.invoke(this, array, PERMISSON_REQUESTCODE);
+				}else{
+
+					Intent intent1 = new Intent(CheckPermissionsActivity.this, MainActivity.class);
+					startActivity(intent1);
+
 				}
 			}
 		} catch (Throwable e) {
+
 		}
 	}
 
@@ -105,8 +109,7 @@ public class CheckPermissionsActivity extends Activity {
 					Method checkSelfMethod = getClass().getMethod("checkSelfPermission", String.class);
 					Method shouldShowRequestPermissionRationaleMethod = getClass().getMethod("shouldShowRequestPermissionRationale",
 							String.class);
-					if ((Integer)checkSelfMethod.invoke(this, perm) != PackageManager.PERMISSION_GRANTED
-							|| (Boolean)shouldShowRequestPermissionRationaleMethod.invoke(this, perm)) {
+					if ((Integer)checkSelfMethod.invoke(this, perm) != PackageManager.PERMISSION_GRANTED || (Boolean)shouldShowRequestPermissionRationaleMethod.invoke(this, perm)) {
 						needRequestPermissonList.add(perm);
 					}
 				}
@@ -124,21 +127,23 @@ public class CheckPermissionsActivity extends Activity {
 	 * @since 2.5.0
 	 *
 	 */
-	private boolean verifyPermissions(int[] grantResults) {
+	public boolean verifyPermissions(int[] grantResults) {
 		for (int result : grantResults) {
 			if (result != PackageManager.PERMISSION_GRANTED) {
+				System.exit(0);
 				return false;
 			}
 		}
 		return true;
 	}
 
-	@TargetApi(23)
+	@TargetApi(28)
 	public void onRequestPermissionsResult(int requestCode,String[] permissions, int[] paramArrayOfInt) {
 		if (requestCode == PERMISSON_REQUESTCODE) {
 			if (!verifyPermissions(paramArrayOfInt)) {
 				showMissingPermissionDialog();
 				isNeedCheck = false;
+
 			}else{
 
 			}
@@ -157,16 +162,14 @@ public class CheckPermissionsActivity extends Activity {
 		builder.setMessage(R.string.notifyMsg);
 
 		// 拒绝, 退出应用
-		builder.setNegativeButton(R.string.cancel,
-				new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(R.string.cancel,new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						finish();
 					}
 				});
 
-		builder.setPositiveButton(R.string.setting,
-				new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(R.string.setting,new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						startAppSettings();
@@ -185,8 +188,7 @@ public class CheckPermissionsActivity extends Activity {
 	 *
 	 */
 	private void startAppSettings() {
-		Intent intent = new Intent(
-				Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+		Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
 		intent.setData(Uri.parse("package:" + getPackageName()));
 		startActivity(intent);
 	}
